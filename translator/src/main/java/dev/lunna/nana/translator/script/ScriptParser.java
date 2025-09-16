@@ -59,7 +59,7 @@ public class ScriptParser {
         List<TranslationHash> hashes = new ArrayList<>();
         for (var line : lines) {
             if (line.isTranslatable()) {
-                hashes.add(new TranslationHash(fileName, line.getInstruction(), line.hashCode(), line.getText()));
+                hashes.add(new TranslationHash(fileName, line.getLineNumber(), line.getInstruction(), line.hashCode(), line.getText()));
             }
         }
         return hashes;
