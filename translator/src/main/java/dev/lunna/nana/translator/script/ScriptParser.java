@@ -21,16 +21,34 @@ public class ScriptParser {
         while (iterator.hasNext()) {
             String line = iterator.next();
             lineNumber++;
-            if (line.contains("MSGN")) {
-                lines.add(new MsgNLine(line, hash_prefix, lineNumber));
-            } else if (line.contains("MSG")) {
-                lines.add(new MsgLine(line, hash_prefix, lineNumber));
-            } else {
-                lines.add(new BasicLine(line, hash_prefix, lineNumber));
+
+            switch (getInstruction(line)) {
+                case MSG ->  lines.add(new MsgLine(line, hash_prefix, lineNumber));
+                case MSGN -> lines.add(new MsgNLine(line, hash_prefix, lineNumber));
+                case OTHER -> lines.add(new BasicLine(line, hash_prefix, lineNumber));
             }
         }
 
         return this;
+    }
+
+    public ScriptInstruction getInstruction(@NotNull final String line) {
+        StringBuilder builder = new StringBuilder();
+        boolean foundText = false;
+
+        for (char c : line.toCharArray()) {
+            if (Character.isWhitespace(c) || c == '\"') {
+                if (foundText)
+                    break;
+                else
+                    continue;
+            } else {
+                foundText = true;
+            }
+            builder.append(c);
+        }
+
+        return ScriptInstruction.fromString(builder.toString());
     }
 
     public List<ScriptLine> getLines() {
