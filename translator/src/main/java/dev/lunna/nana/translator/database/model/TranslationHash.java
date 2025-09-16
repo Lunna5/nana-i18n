@@ -13,6 +13,9 @@ public class TranslationHash {
     @Column
     private String file;
 
+    @Column
+    private int line;
+
     @Enumerated(EnumType.ORDINAL)
     private ScriptInstruction instruction;
 
@@ -25,8 +28,9 @@ public class TranslationHash {
     public TranslationHash() {
     }
 
-    public TranslationHash(String file, ScriptInstruction instruction, int hash, String original) {
+    public TranslationHash(String file, int line, ScriptInstruction instruction, int hash, String original) {
         this.file = file;
+        this.line = line;
         this.instruction = instruction;
         this.hash = hash;
         this.original = original;
@@ -54,6 +58,22 @@ public class TranslationHash {
 
     public void setHash(int hash) {
         this.hash = hash;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
     }
 
     public String getOriginal() {
