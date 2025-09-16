@@ -45,3 +45,6 @@ bin/
 result/
 game/
 !game/README.md
+
+### Database ###
+*.db
