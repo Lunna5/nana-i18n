@@ -32,6 +32,14 @@ public abstract class ScriptLine {
 
     @Override
     public int hashCode() {
-        return (hash_prefix + line).hashCode();
+        return hash().hashCode();
+    }
+
+    public int getLineNumber() {
+        return line;
+    }
+
+    public String hash() {
+        return hash_prefix + ":" + line;
     }
 }
