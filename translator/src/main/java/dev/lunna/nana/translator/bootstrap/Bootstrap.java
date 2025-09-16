@@ -24,8 +24,8 @@ public final class Bootstrap implements Callable<Integer> {
     @Parameters(index = "0", description = "The input file or folder to translate.")
     private String input;
 
-    @Option(names = {"-o", "--output"}, description = "The output folder.")
-    private String output = "output";
+    @Option(names = {"-o", "--output"}, description = "The output folder.", defaultValue = "tl")
+    private String output = "tl";
 
     @Option(names = {"-p", "--prompt"}, description = "The translation prompt to use.")
     private String prompt = "classpath:prompts/jp2en.txt";
