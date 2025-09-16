@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- SQLite JDBC Driver -->
+        <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
+
+        <!-- SQLite Database File Path -->
+        <property name="hibernate.connection.url">jdbc:sqlite:script.db</property>
+
+        <!-- SQLite Dialect -->
+        <property name="hibernate.dialect">org.hibernate.community.dialect.SQLiteDialect</property>
+
+        <!-- Echo SQL to console -->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">false</property>
+
+        <!-- Update database schema when application starts -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <property name="hibernate.jdbc.batch_size">50</property>
+
+        <!-- (Optional) Order inserts and updates for better batching -->
+        <property name="hibernate.order_inserts">true</property>
+        <property name="hibernate.order_updates">true</property>
+
+        <!-- List your entity classes here -->
+        <mapping class="dev.lunna.nana.translator.database.model.TranslationHash"/>
+    </session-factory>
+
+</hibernate-configuration>
