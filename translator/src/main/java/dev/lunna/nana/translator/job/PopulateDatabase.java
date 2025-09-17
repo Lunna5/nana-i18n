@@ -1,14 +1,18 @@
 package dev.lunna.nana.translator.job;
 
 import dev.lunna.nana.translator.bootstrap.TranslatorSettings;
+import dev.lunna.nana.translator.database.model.PendingTranslation;
 import dev.lunna.nana.translator.database.model.TranslationHash;
+import dev.lunna.nana.translator.database.service.PendingTranslationService;
 import dev.lunna.nana.translator.database.service.TranslationHashService;
 import dev.lunna.nana.translator.script.ScriptParser;
+import dev.lunna.nana.translator.tl.Language;
 import dev.lunna.nana.translator.util.FileUtil;
 import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PopulateDatabase implements Runnable {
@@ -16,11 +20,17 @@ public class PopulateDatabase implements Runnable {
 
     private final TranslatorSettings translatorSettings;
     private final TranslationHashService hashService;
+    private final PendingTranslationService pendingTranslationService;
 
     @Inject
-    public PopulateDatabase(@NotNull final TranslatorSettings translatorSettings, @NotNull final TranslationHashService hashService) {
+    public PopulateDatabase(
+            @NotNull final TranslatorSettings translatorSettings,
+            @NotNull final TranslationHashService hashService,
+            @NotNull final PendingTranslationService pendingTranslationService
+    ) {
         this.translatorSettings = translatorSettings;
         this.hashService = hashService;
+        this.pendingTranslationService = pendingTranslationService;
     }
 
     @Override
@@ -33,6 +43,15 @@ public class PopulateDatabase implements Runnable {
             List<TranslationHash> hashes = parser.getTranslationHashes(file.getName());
 
             hashService.batchSave(hashes);
+
+            List<PendingTranslation> jobs = new ArrayList<>();
+
+            for (var hash : hashes) {
+                var job = new PendingTranslation(hash, JobStatus.PENDING, TranslationJobType.TRANSLATE, Language.EN);
+                jobs.add(job);
+            }
+
+            pendingTranslationService.batchSave(jobs);
         }
     }
 }

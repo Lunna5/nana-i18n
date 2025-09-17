@@ -28,6 +28,7 @@
 
         <!-- List your entity classes here -->
         <mapping class="dev.lunna.nana.translator.database.model.TranslationHash"/>
+        <mapping class="dev.lunna.nana.translator.database.model.PendingTranslation"/>
     </session-factory>
 
 </hibernate-configuration>
